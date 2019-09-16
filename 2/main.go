@@ -27,74 +27,43 @@ type ListNode struct {
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	var p1, p2, result, resultEnd *ListNode //resultEnd指向返回结果的最后一个有效node
-	p1, result = l1, l1                     //将l2的加到l1上来
-	p2 = l2
-	value := 0 //每一位数加上来的值
-	carry := 0 //进位信息
-	for p1 != nil && p2 != nil {
-		value = p1.Val + p2.Val + carry
+	var p1, p2, resHead, pres, newNode *ListNode
+	resHead = &ListNode{}
+	pres = resHead
+	p1, p2 = l1, l2 //将l2的加到l1上来，最终返回的是l1
+	value := 0      //每一位数加上来的值
+	carry := 0      //进位信息
+	for p1 != nil || p2 != nil {
+		value = carry
+		if p1 != nil {
+			value += p1.Val
+			p1 = p1.Next
+		}
+		if p2 != nil {
+			value += p2.Val
+			p2 = p2.Next
+		}
 		if value > 9 {
 			carry = 1
 			value %= 10
 		} else {
 			carry = 0
 		}
-		p1.Val = value
-		resultEnd = p1
-		p1 = p1.Next
-		p2 = p2.Next
+		newNode = &ListNode{}
+		newNode.Next = nil
+		newNode.Val = value
+		pres.Next = newNode
+		pres = pres.Next
 	}
-	var plast *ListNode
-	if p1 == nil {
-		plast = p2
-	} else {
-		plast = p1
+	if carry != 0 {
+		newNode = &ListNode{}
+		newNode.Next = nil
+		newNode.Val = carry
+		pres.Next = newNode
+		pres = pres.Next
 	}
-	if plast == nil {
-		if carry == 1 {
-			addLastNode(resultEnd)
-		}
-		return result
-	}
-	if carry == 0 {
-		resultEnd.Next = plast
-		return result
-	} else {
-		resultEnd.Next = plast
-		value = plast.Val + carry
-		carry = 0
-		if value <= 9 { //如果没有进位，直接返回
-			plast.Val = value
-			return result
-		}
-		for value > 9 {
-			plast.Val = 0
-			carry = 1
-			resultEnd = plast
-			plast = plast.Next
-			if plast == nil {
-				break
-			}
-			value = plast.Val + carry
-			carry = 0
-		}
-		//从循环出来的时候，不要忘记把最后value的值赋值给plast
-		if plast != nil {
-			plast.Val = value
-			return result
-		}
-		if carry == 1 { //需要创建新的
-			addLastNode(resultEnd)
-		}
-		return result
-	}
-}
-
-//现在两个链表已经加完毕，有进位需要申请一个新的node
-func addLastNode(plast *ListNode) {
-	newNode := &ListNode{1, nil}
-	plast.Next = newNode
+	resHead = resHead.Next
+	return resHead
 }
 
 func makeList(l1, l2 []int) (*ListNode, *ListNode) {
