@@ -30,7 +30,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	var p1, p2, resHead, pres, newNode *ListNode
 	resHead = &ListNode{}
 	pres = resHead
-	p1, p2 = l1, l2 //将l2的加到l1上来，最终返回的是l1
+	p1, p2 = l1, l2 //分别指向两个链表
 	value := 0      //每一位数加上来的值
 	carry := 0      //进位信息
 	for p1 != nil || p2 != nil {
