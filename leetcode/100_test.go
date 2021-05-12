@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/jcuan/leetcode/structure"
+	"github.com/jcuan/somecode/structure"
 )
 
 func TestBuildTree106(t *testing.T) {

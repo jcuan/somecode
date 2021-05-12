@@ -3,7 +3,7 @@ package sort
 import (
 	"testing"
 
-	"github.com/jcuan/leetcode/structure"
+	"github.com/jcuan/somecode/structure"
 )
 
 // 应该每种排序针对性的测试的，就先copy吧。。。。

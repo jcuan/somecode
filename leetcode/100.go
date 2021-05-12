@@ -1,6 +1,6 @@
 package leetcode
 
-import "github.com/jcuan/leetcode/structure"
+import "github.com/jcuan/somecode/structure"
 
 /**
  * Definition for a binary tree node.

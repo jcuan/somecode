@@ -1,7 +1,7 @@
 package sort
 
 import (
-	st "github.com/jcuan/leetcode/structure"
+	st "github.com/jcuan/leetcode/somecode"
 )
 
 // 归并排序
