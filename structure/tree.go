@@ -136,7 +136,7 @@ func PostOrderStack(root *BiTreeNode) []interface{} {
 			break
 		}
 		temp, _ = val.(*BiTreeNode)
-		// 必须右子树为空或者刚刚被访问过才可以访问该根节点，否则访问右子树
+		// 必须右子树为空或者刚刚被访问过(刚从右子树访问完回来）才可以访问该根节点，否则访问右子树
 		if temp.Right == nil || temp.Right == lastVisted {
 			s1.Pop() // 这个结点没有用处啦
 			values = append(values, temp.Val)
@@ -147,4 +147,35 @@ func PostOrderStack(root *BiTreeNode) []interface{} {
 		}
 	}
 	return values
+}
+
+// 层次遍历
+func LevelOrder(root *BiTreeNode) [][]interface{} {
+	if root == nil {
+		return nil
+	}
+	var result [][]interface{}
+	var tempLevelData []interface{}  // 临时保存这一行的数据
+	var nextLevelQueue []*BiTreeNode // 保存下一行的节点信息
+	var currentQueue []*BiTreeNode
+	currentQueue = append(currentQueue, root)
+	for len(currentQueue) != 0 {
+		node := currentQueue[0]
+		currentQueue = currentQueue[1:]
+		tempLevelData = append(tempLevelData, node.Val)
+		if node.Left != nil {
+			nextLevelQueue = append(nextLevelQueue, node.Left)
+		}
+		if node.Right != nil {
+			nextLevelQueue = append(nextLevelQueue, node.Right)
+		}
+
+		if len(currentQueue) == 0 { // 本层处理完毕，开始处理下一层
+			result = append(result, tempLevelData)
+			tempLevelData = nil
+			currentQueue = nextLevelQueue
+			nextLevelQueue = nil
+		}
+	}
+	return result
 }
