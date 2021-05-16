@@ -121,6 +121,7 @@ func forPermute47(nums []int, first int, res *[][]int) {
 }
 
 // 动态规划，未优化
+// https://link.zhihu.com/?target=https%3A//leetcode-cn.com/problems/unique-paths/
 func uniquePaths62(m int, n int) int {
 	var info = make([][]int, m)
 	for i := 0; i < m; i++ {
@@ -138,6 +139,30 @@ func uniquePaths62(m int, n int) int {
 		}
 	}
 	return info[m-1][n-1]
+}
+
+// 空间优化版本
+func minPathSum62_2(grid [][]int) int {
+	var m = len(grid)
+	var n = len(grid[0])
+	var info = make([]int, n)
+	info[0] = grid[0][0]
+	for i := 1; i < n; i++ {
+		info[i] = info[i-1] + grid[0][i]
+	}
+	for i := 1; i < m; i++ {
+		info[0] = info[0] + grid[i][0]
+		for j := 1; j < n; j++ {
+			var temp int
+			if info[j] > info[j-1] {
+				temp = info[j-1]
+			} else {
+				temp = info[j]
+			}
+			info[j] = temp + grid[i][j]
+		}
+	}
+	return info[n-1]
 }
 
 // 动态规划，未优化
@@ -204,7 +229,7 @@ func minPathSum64(grid [][]int) int {
 	var m = len(grid)
 	var n = len(grid[0])
 	var info = make([][]int, m)
-	for i := 0; i < n; i++ {
+	for i := 0; i < m; i++ {
 		info[i] = make([]int, n)
 	}
 	info[0][0] = grid[0][0]

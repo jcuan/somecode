@@ -5,7 +5,22 @@ import "fmt"
 // 插入排序
 
 // Shell 希尔排序，从小到大
-func Shell(inputs []int) {
+func ShellSort(inputs []int) {
+	var step int // shell排序的步长，按照5 3 1的方式， 只是举个例子
+	var ilen = len(inputs)
+
+	for step = 5; step >= 1; step -= 2 {
+		for i := step; i < ilen; i++ {
+			for j := i; j >= step && inputs[j] < inputs[j-step]; j -= step {
+				inputs[j], inputs[j-step] = inputs[j-step], inputs[j]
+			}
+		}
+		fmt.Printf("step=%d:%v\n", step, inputs)
+	}
+}
+
+// Shell 希尔排序，从小到大
+func ShellSort_rubbish(inputs []int) {
 	var group int // 组的编号
 	var step int  // shell排序的步长，按照5 3 1的方式
 	var ilen = len(inputs)
@@ -31,14 +46,25 @@ func Shell(inputs []int) {
 	}
 }
 
+// 简单插入排序
+func SimpleInsert(inputs []int) {
+	inlen := len(inputs)
+	for i := 1; i < inlen; i++ {
+		// j代表有序部分的索引
+		for j := i; j > 0 && inputs[j] < inputs[j-1]; j-- {
+			inputs[j], inputs[j-1] = inputs[j-1], inputs[j]
+		}
+	}
+}
+
 // BinaryInsert 二分插入 仍需要大量移动
 func BinaryInsert(inputs []int) {
+	// index: 需要新插入的元素的位置
 	findBinaryFunc := func(index int) int {
 		high := index - 1
 		low := 0
-		var mid int
 		for low <= high {
-			mid = (high + low) / 2
+			mid := (high + low) / 2
 			if inputs[index] >= inputs[mid] { // 如果相等的话也在原元素后边，保持稳定性
 				low = mid + 1
 			} else {
@@ -51,6 +77,7 @@ func BinaryInsert(inputs []int) {
 	for i := 1; i < len(inputs); i++ {
 		current := inputs[i]
 		// 已经有序的序列0...i-1 二分查找
+		// 如果找到的位置为index，那么[index, i)的所有位置的元素，需要向后移动
 		index := findBinaryFunc(i)
 		for j := i; j > index; j-- {
 			inputs[j] = inputs[j-1]

@@ -10,15 +10,15 @@ import (
 // ListNode 链表结点
 // 注意这个链表不含有头结点
 type ListNode struct {
-	Value interface{}
-	Next  *ListNode
+	Val  interface{}
+	Next *ListNode
 }
 
-// MustIntValue 得到int的值
-func (l *ListNode) MustIntValue() int {
-	resInt, ok := l.Value.(int)
+// MustIntVal 得到int的值
+func (l *ListNode) MustIntVal() int {
+	resInt, ok := l.Val.(int)
 	if !ok {
-		panic("MustIntValue fail!")
+		panic("MustIntVal fail!")
 	}
 	return resInt
 }
@@ -33,51 +33,63 @@ func (l *ListNode) Skip(step int) *ListNode {
 	return p
 }
 
-// MergeTwoIntList 将连个list合并
-// 直接在l1上操作，不创建新的list
-// order必须是从小到大排列
+// 不创建任何新节点
 func MergeTwoIntList(l1 *ListNode, l2 *ListNode) *ListNode {
-	pl1 := l1
-	pl2 := l2
-
-	var (
-		head, // 新链表头
-		tail, // 新链表尾
-		p *ListNode // 操作新链表的指针
-	)
-
-	for pl1 != nil && pl2 != nil {
-		if pl1.MustIntValue() <= pl2.MustIntValue() {
-			p = pl1
-			pl1 = pl1.Next
-		} else {
-			p = pl2
-			pl2 = pl2.Next
-		}
-		if head == nil { // 中间不处理Next乱指的问题，最后再置空
-			head = p
-			tail = p
-		} else {
-			tail.Next = p
-			tail = p
-		}
+	if l1 == nil {
+		return l2
 	}
-	// 好了，现在至少有一个达到末尾了
-	if pl1 != nil {
-		p = pl1
-	} else if pl2 != nil {
-		p = pl2
+	if l2 == nil {
+		return l1
+	}
+	var newHead *ListNode
+	var pother *ListNode
+	if l1.MustIntVal() <= l2.MustIntVal() {
+		newHead = l1
+		pother = l2
 	} else {
-		p = nil
+		newHead = l2
+		pother = l1
 	}
-	// 把这个尾巴加到末尾
-	for p != nil {
-		tail.Next = p
-		tail = p
-		p = p.Next
+	pnew := newHead.Next
+	prenew := newHead
+	for pnew != nil && pother != nil {
+		if pnew.MustIntVal() <= pother.MustIntVal() {
+			prenew = pnew
+			pnew = pnew.Next
+			continue
+		}
+		prenew.Next = pother
+		prenew = prenew.Next
+		pother = pother.Next
+		prenew.Next = pnew
 	}
-	tail.Next = nil
-	return head
+	if pother != nil {
+		prenew.Next = pother
+	}
+	return newHead
+}
+
+// 创建一个新节点
+func MergeTwoIntList2(l1 *ListNode, l2 *ListNode) *ListNode {
+	newHead := &ListNode{}
+	cur := newHead
+	for l1 != nil && l2 != nil {
+		if l1.MustIntVal() <= l2.MustIntVal() {
+			cur.Next = l1
+			cur = l1
+			l1 = l1.Next
+		} else {
+			cur.Next = l2
+			cur = l2
+			l2 = l2.Next
+		}
+	}
+	if l1 != nil {
+		cur.Next = l1
+	} else if l2 != nil {
+		cur.Next = l2
+	}
+	return newHead.Next
 }
 
 // Print 打印链表
@@ -91,22 +103,22 @@ func (l *ListNode) Print() {
 		} else {
 			flag = "->%v"
 		}
-		b.WriteString(fmt.Sprintf(flag, p.Value))
+		b.WriteString(fmt.Sprintf(flag, p.Val))
 		p = p.Next
 	}
 	log.Println(b.String())
 }
 
 // NewIntList 根据int slice创建list
-func NewIntList(values []int) (*ListNode, error) {
-	if len(values) == 0 {
-		return nil, errors.New("empty values")
+func NewIntList(Vals []int) (*ListNode, error) {
+	if len(Vals) == 0 {
+		return nil, errors.New("empty Vals")
 	}
 	var head *ListNode
 	var pre *ListNode
-	for i := range values {
+	for i := range Vals {
 		l := new(ListNode)
-		l.Value = values[i]
+		l.Val = Vals[i]
 		if head == nil {
 			head = l
 		} else {

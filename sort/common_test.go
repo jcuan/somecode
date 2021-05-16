@@ -10,7 +10,7 @@ import (
 
 func TestShell(t *testing.T) {
 	inputs := []int{23, 15, 12, 35, 46, 19, 20, 14, 8, 74, 86, 25}
-	Shell(inputs)
+	ShellSort(inputs)
 	rights := []int{8, 12, 14, 15, 19, 20, 23, 25, 35, 46, 74, 86}
 	for i := range inputs {
 		if inputs[i] != rights[i] {
@@ -26,6 +26,7 @@ func TestBinaryInsert(t *testing.T) {
 	for i := range inputs {
 		if inputs[i] != rights[i] {
 			t.Errorf("fail expect:%v, actual:%v\n", rights, inputs)
+			break
 		}
 	}
 }
@@ -48,6 +49,7 @@ func TestQuick(t *testing.T) {
 	for i := range inputs {
 		if inputs[i] != rights[i] {
 			t.Errorf("fail expect:%v, actual:%v\n", rights, inputs)
+			break
 		}
 	}
 }
@@ -59,13 +61,15 @@ func TestHeap(t *testing.T) {
 	for i := range inputs {
 		if inputs[i] != rights[i] {
 			t.Fatalf("fail expect:%v, actual:%v\n", rights, inputs)
+			break
 		}
 	}
 }
 
 func TestMerge(t *testing.T) {
+	// inputs := []int{1, 4, 7, 2, 1}
 	inputs := []int{23, 15, 12, 35, 46, 19, 20, 14, 8, 74, 12, 86, 25, 12}
-	res := MergeSlice(inputs)
+	res := MergeSortSlice(inputs)
 	rights := []int{8, 12, 12, 12, 14, 15, 19, 20, 23, 25, 35, 46, 74, 86}
 	checkItems(rights, res, t)
 	head, _ := structure.NewIntList(inputs)
@@ -73,7 +77,7 @@ func TestMerge(t *testing.T) {
 	result.Print()
 	p := result
 	for i := range rights {
-		intVal := p.MustIntValue()
+		intVal := p.MustIntVal()
 		if intVal != rights[i] {
 			p.Print()
 			t.Fatal()

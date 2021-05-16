@@ -45,7 +45,7 @@ func TestMergeTwoList(t *testing.T) {
 	for _, values := range intValuesList {
 		l1, _ := NewIntList(values[0])
 		l2, _ := NewIntList(values[1])
-		l = MergeTwoIntList(l1, l2)
+		l = MergeTwoIntList2(l1, l2)
 		l.Print()
 	}
 	out := b.String()

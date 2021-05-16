@@ -8,7 +8,7 @@ class Solution:
         columnMax = len(matrix[0]) - 1
         row = rowMax
         column = 0
-        while 0<= row <= rowMax and 0 <= column <= columnMax:
+        while 0<= row and column <= columnMax:
             nodeVal = matrix[row][column]
             if nodeVal == target:
                 return True
