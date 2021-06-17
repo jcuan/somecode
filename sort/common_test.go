@@ -38,6 +38,7 @@ func TestBubble(t *testing.T) {
 	for i := range inputs {
 		if inputs[i] != rights[i] {
 			t.Errorf("fail expect:%v, actual:%v\n", rights, inputs)
+			break
 		}
 	}
 }

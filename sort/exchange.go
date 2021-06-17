@@ -5,19 +5,20 @@ import "math/rand"
 // Bubble 冒泡排序
 func Bubble(inputs []int) {
 	ilen := len(inputs)
-	var changed = true // 用来指明是否有交换，没有交换可以提前结束排序
+	var lastChangeIndex = ilen - 1 // 判断交换的最后位置，这之后的都是有序的，不用再判断
 
 	for i := 1; i < ilen; i++ { // 外层循环，需要循环len-1次
-		if changed == false {
-			break
-		}
-		changed = false
-		for j := 0; j < ilen-i; j++ { // 内层循环，在未排序的前段排序
+		tmpLastUpdate := -1
+		for j := 0; j < ilen-i && j <= lastChangeIndex; j++ { // 内层循环，在未排序的前段排序
 			if inputs[j] > inputs[j+1] {
 				inputs[j], inputs[j+1] = inputs[j+1], inputs[j]
-				changed = true
+				tmpLastUpdate = j
 			}
 		}
+		if tmpLastUpdate == -1 { // 没有需要再交换的了
+			break
+		}
+		lastChangeIndex = tmpLastUpdate
 	}
 }
 

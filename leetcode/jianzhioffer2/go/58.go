@@ -1,7 +1,9 @@
 package jzoffer
 
+// https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/
+
 func ReverseWords2(s string) string {
-	buffer := make([]byte, len(s)+1, len(s)+1) // 有可能多存一个空格
+	buffer := make([]byte, len(s)+1) // 有可能多存一个空格
 	bufferIndex := 0
 	blank := byte(' ')
 	index := len(s) - 1
